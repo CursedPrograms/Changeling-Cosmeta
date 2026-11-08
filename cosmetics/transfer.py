@@ -46,9 +46,11 @@ class MakeupTransfer:
         self.session = ort.InferenceSession(MODEL, providers=providers)
         self.inputs = [i.name for i in self.session.get_inputs()]
 
-    def delta(self, face, reference_face):
+    def delta(self, face, reference_face, paint=False):
         """The makeup's colour change for `face` (a read Face), taken from `reference_face` (another read Face):
-        a full-size LAB difference, already limited to where makeup goes."""
+        a full-size LAB difference, already limited to where makeup goes. paint=True is face paint (a clown's
+        white, corpse paint, festival colours): everything the model changed on the whole face is kept, the
+        skin's lightness too."""
         if face.points is None or reference_face.points is None:
             raise ValueError("no face found")
         box = _crop_box(face.points, face.image.shape)
@@ -69,6 +71,10 @@ class MakeupTransfer:
         fx0, fy0 = max(0, x0), max(0, y0)
         fx1, fy1 = min(w, x0 + side), min(h, y0 + side)
         full[fy0:fy1, fx0:fx1] = d[fy0 - y0:fy1 - y0, fx0 - x0:fx1 - x0]
+        if paint:
+            whole = face.mask("skin", "nose", "u_lip", "l_lip", "l_brow", "r_brow", "l_eye", "r_eye",
+                              feather=max(1.0, face.size * 0.008))
+            return full * whole[..., None], out
         keep = self.where(face)
         # Lids and brows: makeup only darkens them (the model's paler is its training bias, not makeup);
         # lips may go either way (a nude lipstick is lighter).
@@ -97,3 +103,24 @@ class MakeupTransfer:
         light = full                                        # lightness: lips, eyes, brows only
         tint = np.maximum(full, colour)                     # colour: those, and some on the skin and cheeks
         return np.stack([light, tint, tint], axis=-1)
+
+
+YUNET = os.path.join(HERE, "models", "face_detection_yunet_2023mar.onnx")
+
+
+def read_reference(parser, image):
+    """A reference face for the transfer. Face Mesh reads most faces; heavy face paint (a clown's white, corpse
+    paint) can hide the features it looks for, and then OpenCV's YuNet finds the face's box instead: the
+    transfer only needs to know where the reference's face is."""
+    from .parse import Face
+    try:
+        return parser.read(image)
+    except ValueError:
+        h, w = image.shape[:2]
+        detector = cv2.FaceDetectorYN.create(YUNET, "", (w, h), 0.4)
+        _, faces = detector.detect(cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+        if faces is None:
+            raise ValueError("No face found in the makeup photo.")
+        x, y, bw, bh = faces[np.argmax(faces[:, -1])][:4]
+        corners = np.float32([[x, y], [x + bw, y], [x, y + bh], [x + bw, y + bh]])
+        return Face(image, np.zeros((h, w), np.uint8), corners)

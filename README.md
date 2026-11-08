@@ -39,7 +39,7 @@ needed. `run.bat photo.jpg` opens with that photo.
 | Control | Does |
 | --- | --- |
 | **Open photo** (<kbd>Ctrl</kbd>+<kbd>O</kbd>), **Save** (<kbd>Ctrl</kbd>+<kbd>S</kbd>) | the face is read once (a few seconds); Save writes the full-size result |
-| **Copy makeup from a photo** | pick a photo of a face wearing makeup (`makeup_refs/`): its lips, eyes, blush and brows come over; your own skin tone stays |
+| **Copy makeup from a photo** | pick a photo of a face wearing makeup (`makeup_refs/`). **Makeup**: its lips, eyes, blush and brows come over, your own skin tone stays. **Face paint**: everything comes over, a clown's or a goth's white base too. It copies colours and style, not drawn patterns (cracks, stars, motifs) |
 | **Layer 1 / Layer 2** | two layers that stack, each with its own looks, editor, **Opacity** and **Shown**; **Clear layer** starts one again |
 | **Hair colour** | 11 colours (platinum to electric blue) or any colour (+) |
 | **Lips** | lipstick, with **Gloss** |

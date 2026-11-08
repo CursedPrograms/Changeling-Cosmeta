@@ -193,6 +193,12 @@ class Window:
         self.ref_thumb.pack(side="left")
         self.ref_btn = ctk.CTkButton(row, text="Pick a makeup photo", command=self.pick_reference)
         self.ref_btn.pack(side="left", fill="x", expand=True, padx=(8, 0))
+        self.paint_mode = ctk.CTkSegmentedButton(box, values=["Makeup", "Face paint"])
+        self.paint_mode.set("Makeup")
+        self.paint_mode.pack(fill="x", padx=8, pady=(4, 0))
+        ctk.CTkLabel(box, text="Makeup keeps your own skin tone; Face paint takes everything (a clown's white, "
+                     "corpse paint, festival colours). Pick the photo again after switching.", text_color="gray55",
+                     wraplength=290, justify="left").pack(anchor="w", padx=8)
         on = ctk.BooleanVar(value=False)
         ctk.CTkSwitch(box, text="Copied makeup", variable=on, command=self._look_changed).pack(anchor="w", padx=8, pady=(4, 2))
         strength = self._slider(box, "Strength", 0, 150, 100, self._look_changed)
@@ -478,11 +484,11 @@ class Window:
         self.ref_thumb.configure(image=ctk.CTkImage(Image.fromarray(square), size=(56, 56)), text="")
 
         def work():
-            from cosmetics.transfer import MakeupTransfer
+            from cosmetics.transfer import MakeupTransfer, read_reference
             if self.transfer_model is None:
                 self.transfer_model = MakeupTransfer()
-            ref = self.parser.read(ref_image)
-            delta, _ = self.transfer_model.delta(self.painter.face, ref)
+            ref = read_reference(self.parser, ref_image)
+            delta, _ = self.transfer_model.delta(self.painter.face, ref, paint=self.paint_mode.get() == "Face paint")
             self.painter.transfer = delta
             ph, pw = self.preview.face.image.shape[:2]
             self.preview.transfer = cv2.resize(delta, (pw, ph), interpolation=cv2.INTER_AREA)
