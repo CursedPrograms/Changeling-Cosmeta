@@ -28,6 +28,14 @@ Two layers that stack, a basic editor, and photographic makeup looks, hair lengt
 [AetherCanvas AI](https://github.com/CursedPrograms/AetherCanvas-AI). Every face above is an AI-generated person who
 doesn't exist.
 
+### Copy makeup from a photo
+
+![Three makeup photos (a clown's face paint, a goth's face paint, dark glam makeup) copied onto three women](assets/transfer_samples.jpg)
+
+The top row is the makeup; each row below is a person wearing it: face paint takes the whole face, white base and
+all; makeup keeps her own skin tone. It copies colours and style, not drawn patterns (cracks, stars, motifs). All
+the faces are AI-generated people who don't exist.
+
 ## Use it
 
 Start `run.bat` (or `.\run.ps1`, `./run.sh`). The first time it sets itself up: Python 3.11 with MediaPipe,
