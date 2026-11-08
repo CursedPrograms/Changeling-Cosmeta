@@ -183,6 +183,22 @@ class Window:
         ctk.CTkButton(row, text="Clear layer", width=90, command=self.clear_layer).pack(side="right")
         self.opacity = self._slider(side, "Opacity", 0, 100, 100, self._layer_changed)
 
+        # makeup copied from a photo (the makeup transfer model)
+        self._section(side, "Copy makeup from a photo")
+        box = ctk.CTkFrame(side, fg_color=("gray86", "gray17"), corner_radius=8)
+        box.pack(fill="x", padx=12, pady=3)
+        row = ctk.CTkFrame(box, fg_color="transparent")
+        row.pack(fill="x", padx=8, pady=(6, 2))
+        self.ref_thumb = ctk.CTkLabel(row, text="", width=56, height=56, fg_color=("gray80", "gray22"), corner_radius=6)
+        self.ref_thumb.pack(side="left")
+        self.ref_btn = ctk.CTkButton(row, text="Pick a makeup photo", command=self.pick_reference)
+        self.ref_btn.pack(side="left", fill="x", expand=True, padx=(8, 0))
+        on = ctk.BooleanVar(value=False)
+        ctk.CTkSwitch(box, text="Copied makeup", variable=on, command=self._look_changed).pack(anchor="w", padx=8, pady=(4, 2))
+        strength = self._slider(box, "Strength", 0, 150, 100, self._look_changed)
+        self.controls["transfer"] = (on, strength, None, None)
+        self.transfer_model = None
+
         group = None
         for g, label, key, colours, gloss in PARTS:
             if g != group:
@@ -442,6 +458,38 @@ class Window:
         self._refresh()
         if self.parser is not None and self.job is None:
             self._run(lambda: self._read(image), "Reading the face")
+
+    def pick_reference(self):
+        """A photo whose makeup to copy (opens in makeup_refs/)."""
+        if self.painter is None or self.job is not None:
+            self.status.configure(text="Open a photo first.")
+            return
+        path = filedialog.askopenfilename(title="A photo with the makeup to copy", filetypes=IMAGE_TYPES,
+                                          initialdir=os.path.join(HERE, "makeup_refs"))
+        if not path:
+            return
+        ref_image = read_rgb(path)
+        if ref_image is None:
+            self.status.configure(text=f"Can't read {os.path.basename(path)}")
+            return
+        h, w = ref_image.shape[:2]
+        s = min(h, w)
+        square = ref_image[(h - s) // 2:(h + s) // 2, (w - s) // 2:(w + s) // 2]
+        self.ref_thumb.configure(image=ctk.CTkImage(Image.fromarray(square), size=(56, 56)), text="")
+
+        def work():
+            from cosmetics.transfer import MakeupTransfer
+            if self.transfer_model is None:
+                self.transfer_model = MakeupTransfer()
+            ref = self.parser.read(ref_image)
+            delta, _ = self.transfer_model.delta(self.painter.face, ref)
+            self.painter.transfer = delta
+            ph, pw = self.preview.face.image.shape[:2]
+            self.preview.transfer = cv2.resize(delta, (pw, ph), interpolation=cv2.INTER_AREA)
+            self.layer.look.transfer.on = True
+            return f"Makeup copied from {os.path.basename(path)}: shown on this layer."
+        self._run(work, "Copying the makeup")
+        self.controls["transfer"][0].set(True)
 
     def generative(self, name, instruction):
         if self.photo is None or self.job is not None:

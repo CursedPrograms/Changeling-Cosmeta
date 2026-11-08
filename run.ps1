@@ -26,5 +26,10 @@ function Fetch($file, $url, $what) {
     }
 }
 Fetch 'face_parsing_int8.onnx' 'https://huggingface.co/jonathandinu/face-parsing/resolve/main/onnx/model_quantized.onnx' 'the face parser, about 90 MB'
+if (-not (Test-Path 'models/dmt.onnx')) {
+    Write-Host 'Downloading the makeup transfer model, about 48 MB, once ...'
+    & curl.exe -L --fail -o 'models/dmt.onnx.part' 'https://github.com/CursedPrograms/Changeling-Cosmetics/releases/download/models/dmt.onnx'
+    if (-not $LASTEXITCODE) { Move-Item 'models/dmt.onnx.part' 'models/dmt.onnx' -Force }
+}
 & $Py app.py @args
 if ($LASTEXITCODE) { Read-Host 'Press Enter' }

@@ -62,6 +62,7 @@ class Look:
     beard: Part = field(default_factory=lambda: Part(False, "#3a2618", 0.7))      # colour the beard
     stubble: Part = field(default_factory=lambda: Part(False, "#1a1410", 0.5))    # paint stubble in
     shave: Part = field(default_factory=lambda: Part(False, "#000000", 0.8))      # shave it off
+    transfer: Part = field(default_factory=lambda: Part(False, "#000000", 1.0))   # makeup copied from a photo
 
 
 def _lab(img):
@@ -166,6 +167,7 @@ class Painter:
         area = facial_hair.area_mask(face)
         self.masks["beard_area"] = area
         self.masks["beard"] = facial_hair.beard_mask(face, self.lab, area) if area is not None else None
+        self.transfer = None        # the copied makeup: a LAB change the size of the photo (transfer.py)
         self._smooth = None
         self._shaved = {}           # strength -> the shaved photo (LAB)
         self._stubble = None
@@ -184,6 +186,8 @@ class Painter:
                 if key not in self._shaved:
                     self._shaved = {key: _lab(facial_hair.shave(self.face.image, m["beard"], key, skin))}
                 lab = self._shaved[key]
+        if look.transfer.on and self.transfer is not None and look.transfer.strength > 0:
+            lab = lab + self.transfer * look.transfer.strength
         if look.beard.on and m["beard"] is not None:
             lab = _tint(lab, m["beard"], look.beard.colour, look.beard.strength, light=0.8, keep=0.5)
         if look.stubble.on and m["beard_area"] is not None and look.stubble.strength > 0:

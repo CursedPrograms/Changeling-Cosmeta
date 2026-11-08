@@ -4,3 +4,7 @@ __pycache__/
 # the face parser: run.bat fetches it (90 MB)
 models/*.onnx
 models/*.part
+models/*.pb
+# your makeup reference photos stay on this PC
+makeup_refs/*
+!makeup_refs/README.md

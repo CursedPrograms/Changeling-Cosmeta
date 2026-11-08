@@ -39,6 +39,7 @@ needed. `run.bat photo.jpg` opens with that photo.
 | Control | Does |
 | --- | --- |
 | **Open photo** (<kbd>Ctrl</kbd>+<kbd>O</kbd>), **Save** (<kbd>Ctrl</kbd>+<kbd>S</kbd>) | the face is read once (a few seconds); Save writes the full-size result |
+| **Copy makeup from a photo** | pick a photo of a face wearing makeup (`makeup_refs/`): its lips, eyes, blush and brows come over; your own skin tone stays |
 | **Layer 1 / Layer 2** | two layers that stack, each with its own looks, editor, **Opacity** and **Shown**; **Clear layer** starts one again |
 | **Hair colour** | 11 colours (platinum to electric blue) or any colour (+) |
 | **Lips** | lipstick, with **Gloss** |
@@ -61,13 +62,17 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
 3. **Facial hair.** The beard area is the jaw from cheek to cheek up to the nostrils, without the lips; the beard is
    whatever in it is clearly darker than the face's own skin. Shave puts the face's own skin tone (a normalised
    blur of the skin around it) back over it; stubble is an even shade with a fine grain.
-4. **Two layers.** Layer 2 is painted onto Layer 1's result with the same masks, each with its editor and opacity.
+4. **Copied makeup.** DMT (Disentangled Makeup Transfer, a GAN, converted to ONNX: `models/dmt.onnx`, 48 MB) puts the
+   reference's makeup on a 256-pixel copy of the face; only its colour change comes back, onto the full-size photo, on
+   the lips, eyes, brows and cheeks. Lids and brows only darken, and the skin keeps its own lightness: the model
+   learned from pale "after" photos, so its foundation would lighten skin, which is a skin-tone change, not makeup.
+5. **Two layers.** Layer 2 is painted onto Layer 1's result with the same masks, each with its editor and opacity.
 
 `cosmetics/adjust.py` (the editor) is the same file in every Changeling.
 
 ## Licenses
 
-The code is MIT. The face parser was trained on CelebAMask-HQ, which is for non-commercial research; MediaPipe is
+The code is MIT; the makeup transfer model comes from an MIT-licensed Space (huggingface.co/spaces/rashid996958/makeup-transfer). The face parser was trained on CelebAMask-HQ, which is for non-commercial research; MediaPipe is
 Apache 2.0.
 
 ---

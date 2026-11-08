@@ -20,6 +20,10 @@ if not exist "models\face_parsing_int8.onnx" (
     curl -L --fail -o "models\face_parsing_int8.onnx.part" "https://huggingface.co/jonathandinu/face-parsing/resolve/main/onnx/model_quantized.onnx" || goto :fail
     move /y "models\face_parsing_int8.onnx.part" "models\face_parsing_int8.onnx" >nul
 )
+if not exist "models\dmt.onnx" (
+    echo Downloading the makeup transfer model, about 48 MB, once ...
+    curl -L --fail -o "models\dmt.onnx.part" "https://github.com/CursedPrograms/Changeling-Cosmetics/releases/download/models/dmt.onnx" && move /y "models\dmt.onnx.part" "models\dmt.onnx" >nul
+)
 "%PY%" app.py %*
 if errorlevel 1 pause
 exit /b
