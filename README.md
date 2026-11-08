@@ -19,7 +19,8 @@
 [CopyCat](https://github.com/CursedPrograms/Changeling-CopyCat) (face swap, photos and video) ·
 [CopyCat Realtime](https://github.com/CursedPrograms/Changeling-CopyCat-Realtime) (face swap, live) ·
 [Tiresias](https://github.com/CursedPrograms/Changeling-Tiresias) (gender) ·
-[Chronos](https://github.com/CursedPrograms/Changeling-Chronos) (age) · **Cosmetics** (makeup, hair, beards).*
+[Chronos](https://github.com/CursedPrograms/Changeling-Chronos) (age) ·
+[Natio](https://github.com/CursedPrograms/Changeling-Natio) (where in the world) · **Cosmetics** (makeup, hair, beards).*
 
 FaceApp-style cosmetics for photos: makeup, hair colour, beards and stubble, painted onto the face itself so
 the light and texture underneath stay (a lipstick keeps the lips' lines, a hair colour keeps every strand).
