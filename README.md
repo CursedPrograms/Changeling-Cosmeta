@@ -24,7 +24,7 @@
 
 FaceApp-style cosmetics for photos: makeup, hair colour, beards and stubble, painted onto the face itself so
 the light and texture underneath stay (a lipstick keeps the lips' lines, a hair colour keeps every strand).
-Two layers that stack, a basic editor, and hair length or a full beard through
+Two layers that stack, a basic editor, and photographic makeup looks, hair length or a full beard through
 [AetherCanvas AI](https://github.com/CursedPrograms/AetherCanvas-AI). Every face above is an AI-generated person who
 doesn't exist.
 
@@ -46,7 +46,7 @@ needed. `run.bat photo.jpg` opens with that photo.
 | **Smooth skin** | an edge-keeping blur on the skin only |
 | **Beard colour, Stubble, Shave** | colour a beard or moustache, paint stubble in, shave stubble or a short beard off |
 | **Editor** | brightness, contrast, saturation, warmth, vignette, sharpen |
-| **Hair length, style, beard** | long, shoulder, bob, short, pixie, shaved; bangs, curly, straight, ponytail, bun, braids; full beard, goatee, moustache, clean shaven: sent to AetherCanvas AI when it's running (a minute or two each); **Back to the original photo** undoes them |
+| **AI looks** (AetherCanvas AI) | makeup: natural, glam, smoky eyes, winged liner, red, nude or berry lips, glow, soft glam, gothic, bridal, freckles, no makeup; hair length: bangs, curly, straight, ponytail, bun, braids; full beard, goatee, moustache, clean shaven: sent to AetherCanvas AI when it's running (a minute or two each); **Back to the original photo** undoes them |
 
 Every control answers at once: the preview is worked on a smaller copy, and Save paints the full-size photo.
 

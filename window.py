@@ -197,7 +197,7 @@ class Window:
             self.controls["adjust:" + key] = s
 
         # the generative edits
-        self._section(side, "Hair length, style, beard  (AetherCanvas AI)")
+        self._section(side, "AI looks: makeup, hair, beard  (AetherCanvas AI)")
         self.ac_note = ctk.CTkLabel(side, text="Looking for AetherCanvas AI ...", text_color="gray55",
                                     wraplength=300, justify="left")
         self.ac_note.pack(anchor="w", padx=12)

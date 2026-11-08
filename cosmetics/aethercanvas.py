@@ -1,4 +1,5 @@
-"""aethercanvas.py - the edits Cosmetics can't paint: hair length and style, a full beard, a clean shave.
+"""aethercanvas.py - the edits Cosmetics can't paint, or paints less well: photographic makeup looks, hair
+length and style, a full beard, a clean shave.
 
 Those need a generative model, so Cosmetics sends the picture to AetherCanvas AI (Qwen-Image Edit, running on
 this PC: https://github.com/CursedPrograms/AetherCanvas-AI) with a ready instruction and gets the edited picture
@@ -19,6 +20,21 @@ import numpy as np
 URL = os.environ.get("AETHERCANVAS_URL", "http://127.0.0.1:7870")
 
 EDITS = {
+    "Makeup": [
+        ("Natural", "Add subtle natural makeup: light foundation, soft blush, mascara and nude lips, keep the face and everything else the same"),
+        ("Glam", "Add glamorous evening makeup: smoky eyes, winged eyeliner, contour and red lipstick, keep the face the same"),
+        ("Smoky eyes", "Add dark smoky eye makeup with blended charcoal eyeshadow, keep the rest of the face the same"),
+        ("Winged liner", "Add a sharp black winged eyeliner, keep the rest of the face the same"),
+        ("Red lips", "Add classic matte red lipstick, keep the rest of the face the same"),
+        ("Nude lips", "Add a soft nude lipstick with a little gloss, keep the rest of the face the same"),
+        ("Berry lips", "Add a deep berry lipstick, keep the rest of the face the same"),
+        ("Glow", "Add a dewy glowing makeup look: highlighter on the cheekbones, peach blush, glossy lips"),
+        ("Soft glam", "Add soft glam makeup: warm brown eyeshadow, lashes, peach blush, rosy lips"),
+        ("Gothic", "Add gothic makeup: dark eyeshadow, black eyeliner and dark plum lipstick"),
+        ("Bridal", "Add elegant bridal makeup: radiant skin, soft rose eyeshadow, lashes and pink lips"),
+        ("Freckles", "Add light natural freckles across the nose and cheeks"),
+        ("No makeup", "Remove all makeup, natural bare skin, keep the face the same"),
+    ],
     "Hair length": [
         ("Long", "Make the hair long, flowing past the shoulders, same colour and texture"),
         ("Shoulder", "Make the hair shoulder-length, same colour and texture"),
