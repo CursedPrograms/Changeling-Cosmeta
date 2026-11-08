@@ -1,0 +1,7 @@
+# Changeling Cosmetics: Python 3.11 (MediaPipe doesn't support newer ones yet)
+numpy<2
+opencv-python==4.10.0.84
+mediapipe==0.10.21
+onnxruntime
+customtkinter==5.2.2
+pillow

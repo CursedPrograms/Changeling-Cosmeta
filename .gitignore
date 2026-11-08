@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+# the face parser: run.bat fetches it (90 MB)
+models/*.onnx
+models/*.part

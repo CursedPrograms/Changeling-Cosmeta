@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changeling Cosmetics: makeup, hair colour and length, beards</title>
+<meta name="description" content="Changeling Cosmetics: FaceApp-style makeup, hair colour, beards and stubble for photos, on two layers, with a basic editor and hair length through AetherCanvas AI. Part of the Changeling family.">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Changeling Cosmetics">
+<meta property="og:description" content="Makeup, hair colour and length, beards.">
+<meta property="og:image" content="assets/cosmetics_samples.jpg">
+<link rel="icon" href="https://cursedprograms.github.io/Changeling-Studio/site/icon.svg">
+<link rel="stylesheet" href="https://cursedprograms.github.io/Changeling-Studio/site/changeling.css">
+</head>
+<body data-changeling="Cosmetics">
+
+<header>
+  <div class="wrap">
+    <img src="https://cursedprograms.github.io/Changeling-Studio/site/logo.svg" alt="The Changeling logo" width="110" height="110">
+    <div class="eyebrow">Changeling</div>
+    <h1>Cosmetics</h1>
+    <p class="tagline">Makeup, hair colour and length, beards</p>
+    <p class="lede">Painted onto the face itself, so the light and texture underneath stay: a lipstick keeps the lips'
+      lines, a hair colour keeps every strand. Two layers that stack, a basic editor, and hair length or a full beard
+      through AetherCanvas AI.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/CursedPrograms/Changeling-Cosmetics">View on GitHub</a>
+      <a class="btn" href="#use">Use it</a>
+      <a class="btn" href="#family">The Changeling family</a>
+    </div>
+    <div class="tags">
+      <span class="tag">SegFormer face parsing</span><span class="tag">MediaPipe</span><span class="tag">ONNX Runtime</span>
+      <span class="tag">no GPU needed</span><span class="tag">Python</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="samples">
+    <h2>What it looks like</h2>
+    <p>Makeup; copper, platinum and electric blue hair; a ginger beard, a shave, grey hair and beard; stubble, and the
+      editor. Every face is an AI-generated person who doesn't exist. Click to enlarge.</p>
+    <figure class="sheet"><img id="sheet" src="assets/cosmetics_samples.jpg" alt="Three people with makeup, hair colours, beard colours, a shave and stubble" width="3080" height="1260" loading="lazy"></figure>
+  </section>
+
+  <section id="use">
+    <h2>Use it</h2>
+    <ol class="steps">
+      <li>Start <code>run.bat</code> (or <code>run.ps1</code>, <code>run.sh</code>). The first run sets itself up (Python 3.11, no GPU needed) and fetches the face parser (about 90 MB).</li>
+      <li><strong>Open photo</strong>: the face is read once, in a few seconds.</li>
+      <li>Switch looks on, pick colours, slide; every change shows at once. <strong>Save</strong> writes the full-size result.</li>
+    </ol>
+    <figure class="sheet"><img src="assets/window.png" alt="Changeling Cosmetics's window" width="1380" height="860" loading="lazy"></figure>
+    <div class="grid two">
+      <div class="card">
+        <h3>The looks</h3>
+        <table>
+          <tr><td>Hair</td><td>11 colours or any colour</td></tr>
+          <tr><td>Face</td><td>lips (with gloss), eyeshadow, eyeliner, blush, brows, smooth skin</td></tr>
+          <tr><td>Facial hair</td><td>beard colour, stubble, shave</td></tr>
+          <tr><td>Editor</td><td>brightness, contrast, saturation, warmth, vignette, sharpen</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Layers and AetherCanvas</h3>
+        <p>Two layers stack, each with its own looks, editor and opacity. Hair length and style, a full beard or a clean
+          shave go to <a href="https://github.com/CursedPrograms/AetherCanvas-AI">AetherCanvas AI</a> when it's running.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="family"></section>
+</main>
+
+<div id="lightbox" class="lightbox" hidden><img alt=""></div>
+
+<footer id="site-footer">&copy; Cursed Entertainment 2026</footer>
+<script src="https://cursedprograms.github.io/Changeling-Studio/site/family.js"></script>
+<script src="https://cursedprograms.github.io/RIFT/site/footer.js"></script>
+</body>
+</html>
