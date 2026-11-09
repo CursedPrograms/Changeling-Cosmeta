@@ -22,7 +22,7 @@ from PIL import Image, ImageTk
 from cosmetics import aethercanvas
 from cosmetics.adjust import Adjust
 from cosmetics.facial_hair import BEARD_COLOURS
-from cosmetics.looks import (BLUSH_COLOURS, BROW_COLOURS, HAIR_COLOURS, LINER_COLOURS, LIP_COLOURS,
+from cosmetics.looks import (BLEND_MODES, BLUSH_COLOURS, BROW_COLOURS, HAIR_COLOURS, LINER_COLOURS, LIP_COLOURS,
                              SHADOW_COLOURS, Look, Painter)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -298,6 +298,15 @@ class Window:
             more.grid(row=n // 9, column=n % 9, padx=2, pady=2)
             chip = ctk.CTkLabel(box, text="", width=60, height=6, corner_radius=3, fg_color=getattr(Look(), key).colour)
             chip.pack(anchor="w", padx=10, pady=(2, 0))
+        if colours and key in ("hair", "lips", "eyeshadow", "blush", "brows"):     # how the colour goes on
+            row = ctk.CTkFrame(box, fg_color="transparent")
+            row.pack(fill="x", padx=8, pady=(4, 0))
+            ctk.CTkLabel(row, text="Blend").pack(side="left")
+            menu = ctk.CTkOptionMenu(row, values=BLEND_MODES, width=130, command=lambda _: self._look_changed())
+            menu.set("Natural")
+            menu.pack(side="right")
+            self.blend_menus = getattr(self, "blend_menus", {})
+            self.blend_menus[key] = menu
         strength = self._slider(box, "Strength", 0, 100, int(getattr(Look(), key).strength * 100), self._look_changed)
         g = self._slider(box, "Gloss", 0, 100, int(Look().lips.gloss * 100), self._look_changed) if gloss else None
         self.controls[key] = (on, strength, g, chip)
@@ -333,6 +342,8 @@ class Window:
                 gloss.shown.configure(text=f"{int(part.gloss * 100)}")
             if chip is not None:
                 chip.configure(fg_color=part.colour)
+            if key in getattr(self, "blend_menus", {}):
+                self.blend_menus[key].set(part.blend)
         for f in fields(Adjust):
             s = self.controls["adjust:" + f.name]
             s.set(getattr(layer.adjust, f.name))
@@ -348,6 +359,8 @@ class Window:
             part.strength = strength.get() / 100
             if gloss is not None:
                 part.gloss = gloss.get() / 100
+            if key in getattr(self, "blend_menus", {}):
+                part.blend = self.blend_menus[key].get()
         self._schedule()
 
     def _adjust_changed(self, *_):

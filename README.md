@@ -66,11 +66,14 @@ needed. `run.bat photo.jpg` opens with that photo.
 | **Hair colour** | 11 colours (platinum to electric blue) or any colour (+) |
 | **Lips** | lipstick, with **Gloss** |
 | **Eyeshadow, Eyeliner, Blush, Brows** | each with its own colours and strength |
+| **Blend** | hair, lips, eyeshadow, blush and brows each choose how their colour goes on: **Natural** (Cosmeta's own), or Photoshop's **Color** (the classic for hair dye: your lightness, the colour's hue), **Hue**, **Soft light**, **Overlay**, **Multiply**, **Screen** |
 | **Smooth skin** | an edge-keeping blur on the skin only |
 | **Editor** | brightness, contrast, saturation, warmth, vignette, sharpen |
 | **AI looks** (AetherCanvas AI) | makeup: natural, glam, smoky eyes, winged liner, red, nude or berry lips, glow, soft glam, gothic, bridal, freckles, no makeup; hair length: bangs, curly, straight, ponytail, bun, braids: sent to AetherCanvas AI when it's running (a minute or two each); **Back to the original photo** undoes them |
 
 Every control answers at once: the preview is worked on a smaller copy, and Save paints the full-size photo.
+
+![Copper and electric blue hair in each blend mode](assets/blend_samples.jpg)
 
 ## How it works
 

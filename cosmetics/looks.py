@@ -48,6 +48,7 @@ class Part:
     colour: str = "#000000"
     strength: float = 0.6
     gloss: float = 0.0          # lips only
+    blend: str = "Natural"      # how the colour goes on: Natural, or a Photoshop blend mode (BLEND_MODES)
 
 
 @dataclass
@@ -92,6 +93,61 @@ def _tint(lab, mask, colour, strength, light=0.6, keep=0.35):
     lab = lab.copy()
     lab[y0:y1, x0:x1] = region * (1 - a) + out * a
     return lab
+
+
+BLEND_MODES = ["Natural", "Color", "Hue", "Soft light", "Overlay", "Multiply", "Screen"]
+
+
+def _soft_light(b, c):
+    """The W3C / Photoshop soft light: the colour lightens or darkens gently, the base's shading stays."""
+    d = np.where(b <= 0.25, ((16 * b - 12) * b + 4) * b, np.sqrt(b))
+    return np.where(c <= 0.5, b - (1 - 2 * c) * b * (1 - b), b + (2 * c - 1) * (d - b))
+
+
+def _blend(lab, mask, colour, strength, mode):
+    """`colour` laid over the masked region with a Photoshop blend mode, then mixed in by mask x strength.
+    Color: the base's lightness, the colour's hue and saturation (the classic for hair dye). Hue: the base's
+    lightness and saturation, the colour's hue. Soft light, Overlay, Multiply, Screen: as in Photoshop, in RGB."""
+    if strength <= 0:
+        return lab
+    ys, xs = np.nonzero(mask > 0.002)
+    if not len(ys):
+        return lab
+    y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
+    region, m = lab[y0:y1, x0:x1], mask[y0:y1, x0:x1]
+    t = _lab(np.uint8([[rgb(colour)]]))[0, 0]
+    if mode == "Color":
+        out = region.copy()
+        out[..., 1:] = t[1:] + (region[..., 1:] - region[..., 1:].mean((0, 1))) * 0.15
+    elif mode == "Hue":
+        chroma = np.hypot(region[..., 1], region[..., 2])
+        chroma = np.maximum(chroma, 0.35 * np.hypot(t[1], t[2]))        # grey hair still takes some colour
+        angle = np.arctan2(t[2], t[1])
+        out = region.copy()
+        out[..., 1], out[..., 2] = chroma * np.cos(angle), chroma * np.sin(angle)
+    else:
+        base = np.clip(cv2.cvtColor(region, cv2.COLOR_LAB2RGB), 0, 1)
+        c = np.float32(rgb(colour)) / 255
+        if mode == "Soft light":
+            mixed = _soft_light(base, c)
+        elif mode == "Overlay":
+            mixed = np.where(base < 0.5, 2 * base * c, 1 - 2 * (1 - base) * (1 - c))
+        elif mode == "Multiply":
+            mixed = base * c
+        else:                                                            # Screen
+            mixed = 1 - (1 - base) * (1 - c)
+        out = cv2.cvtColor(np.clip(mixed, 0, 1).astype(np.float32), cv2.COLOR_RGB2LAB)
+    a = np.clip(m * strength, 0, 1)[..., None]
+    lab = lab.copy()
+    lab[y0:y1, x0:x1] = region * (1 - a) + out * a
+    return lab
+
+
+def _paint(lab, mask, part, strength, light, keep):
+    """A part's colour: its own tint (Natural, with that part's light and keep) or a blend mode."""
+    if part.blend == "Natural":
+        return _tint(lab, mask, part.colour, strength, light=light, keep=keep)
+    return _blend(lab, mask, part.colour, strength, part.blend)
 
 
 def _resample(points, n):
@@ -211,15 +267,15 @@ class Painter:
             a = (m["skin"] * look.skin.strength * 0.85)[..., None]
             lab = lab * (1 - a) + self._smooth * a
         if look.hair.on:
-            lab = _tint(lab, m["hair"], look.hair.colour, look.hair.strength, light=0.95, keep=0.45)
+            lab = _paint(lab, m["hair"], look.hair, look.hair.strength, light=0.95, keep=0.45)
         if look.brows.on:
-            lab = _tint(lab, m["brows"], look.brows.colour, look.brows.strength, light=0.6, keep=0.3)
+            lab = _paint(lab, m["brows"], look.brows, look.brows.strength, light=0.6, keep=0.3)
         if look.eyeshadow.on and m["eyeshadow"] is not None:
-            lab = _tint(lab, m["eyeshadow"], look.eyeshadow.colour, look.eyeshadow.strength * 0.8, light=0.45, keep=0.5)
+            lab = _paint(lab, m["eyeshadow"], look.eyeshadow, look.eyeshadow.strength * 0.8, light=0.45, keep=0.5)
         if look.blush.on and m["blush"] is not None:
-            lab = _tint(lab, m["blush"], look.blush.colour, look.blush.strength * 0.55, light=0.2, keep=0.7)
+            lab = _paint(lab, m["blush"], look.blush, look.blush.strength * 0.55, light=0.2, keep=0.7)
         if look.lips.on:
-            lab = _tint(lab, m["lips"], look.lips.colour, look.lips.strength, light=0.55, keep=0.3)
+            lab = _paint(lab, m["lips"], look.lips, look.lips.strength, light=0.55, keep=0.3)
             if look.lips.gloss > 0:                         # a highlight where the lips already catch light
                 L = lab[..., 0]
                 sel = m["lips"] > 0.3
