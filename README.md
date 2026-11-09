@@ -48,6 +48,8 @@ and web, the corpse paint's cracks, the festival dots. **Face paint** (the first
 **Makeup** (dark glam, last) takes only what the makeup changed and keeps her own skin tone. All the faces are
 AI-generated people who don't exist.
 
+The face paint references are extreme on purpose: they're a stress test (every stroke has to land in the right place, on any face), not what Cosmeta is for. Everyday makeup, like the dark glam one, is the real use, and the subtler it is, the more natural it looks: compare the last column with the others.
+
 ## Use it
 
 Start `run.bat` (or `.\run.ps1`, `./run.sh`). The first time it sets itself up: Python 3.11 with MediaPipe,
