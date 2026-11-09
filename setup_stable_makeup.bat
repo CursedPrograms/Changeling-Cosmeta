@@ -19,6 +19,7 @@ if not exist "%PY%" (
 python -m cosmetics.stable_makeup_models || goto :error
 if not defined STABLE_MAKEUP_DIR set "STABLE_MAKEUP_DIR=F:\AIModels\StableMakeup"
 if not exist "StableMakeup\checkpoints" mklink /J "StableMakeup\checkpoints" "%STABLE_MAKEUP_DIR%" >nul
+echo ready> "StableMakeupeady"
 echo Stable-Makeup is ready: pick it under Copy makeup, Model.
 pause
 exit /b 0

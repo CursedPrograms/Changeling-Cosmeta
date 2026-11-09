@@ -501,7 +501,7 @@ class Window:
         name = next(n for n in MODELS if n.split(" (")[0] == short)
         ok, why = MODELS[name].available()
         notes = {"Warp": "Warp: exact, patterns and all, a fifth of a second.",
-                 "DMT": "DMT: a GAN at 256 pixels; colours and style, not drawn patterns.",
+                 "GAN": "GAN (classic): a research model (DMT) at 256 pixels; colours and style, not drawn patterns.",
                  "Stable-Makeup": "Stable-Makeup: a diffusion model redraws the makeup; seconds a photo, GPU."}
         if not ok:
             self.transfer_pick.set(self.transfer_name.split(" (")[0])

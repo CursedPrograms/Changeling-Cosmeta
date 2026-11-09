@@ -19,4 +19,5 @@ fi
 python3 -m cosmetics.stable_makeup_models
 ROOT="${STABLE_MAKEUP_DIR:-F:/AIModels/StableMakeup}"
 [ -e StableMakeup/checkpoints ] || ln -s "$ROOT" StableMakeup/checkpoints
+echo ready > StableMakeup/ready
 echo "Stable-Makeup is ready: pick it under Copy makeup, Model."

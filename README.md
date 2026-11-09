@@ -89,7 +89,7 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
    in before warping). About a fifth of a second a photo; no model to download. Painted faces Face Mesh can't read
    straight away are cropped to the face OpenCV's YuNet finds and read again.
 
-   **Model** switches how it's copied: **Warp** (this, the default), **DMT** (the earlier GAN: colours and style
+   **Model** switches how it's copied: **Warp** (this, the default), **GAN (classic)** (the earlier model, DMT: Disentangled Makeup Transfer, colours and style
    at 256 pixels, if `models/dmt.onnx` is on the PC) or **Stable-Makeup** (a diffusion model, about 8 GB of models in
    `F:\AIModels\StableMakeup`; it's offered once they're all there). One that isn't available says why.
 

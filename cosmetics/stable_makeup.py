@@ -26,7 +26,10 @@ def python():
 
 
 def installed():
-    return os.path.exists(os.path.join(CODE, "pipeline_sd15.py")) and os.path.exists(python())
+    """Set up by setup_stable_makeup.bat, which writes StableMakeup/ready last: only then is it offered (it runs
+    third-party code, so it's never started on a half-made setup)."""
+    return (os.path.exists(os.path.join(CODE, "pipeline_sd15.py")) and os.path.exists(python())
+            and os.path.exists(os.path.join(CODE, "ready")))
 
 
 def _lab(rgb):

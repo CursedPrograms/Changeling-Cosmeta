@@ -2,7 +2,7 @@
 
     Warp (exact)         mesh_transfer.py: the reference's face warped onto yours, triangle by triangle. Patterns
                          land exactly where they were; a fifth of a second; nothing to download. The default.
-    DMT (GAN)            transfer.py: Disentangled Makeup Transfer, a GAN at 256 x 256: colours and style, not
+    GAN (classic)        transfer.py: DMT (Disentangled Makeup Transfer, a research model; no relation to the DMT app), a GAN at 256 x 256: colours and style, not
                          drawn patterns. Only if models/dmt.onnx is on this PC.
     Stable-Makeup (AI)   Stable-Makeup (Zhang et al. 2024): a diffusion model that redraws the makeup onto your
                          face. About 8 GB of models in F:\\AIModels\\StableMakeup (stable_makeup_models.py fetches
@@ -35,7 +35,7 @@ class _Warp:
 
 
 class _DMT:
-    name = "DMT (GAN)"
+    name = "GAN (classic)"
 
     @staticmethod
     def available():
