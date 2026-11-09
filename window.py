@@ -1,9 +1,9 @@
 """window.py - Changeling Cosmetics's window, in Changeling's look (customtkinter, the Cursed pink).
 
 Open a photo; the face is read once (which pixel is hair, skin, lips, brows; where the face's points are).
-Then every control answers at once: hair colour, lips, eyes, cheeks, brows, skin, facial hair, and the
-basic editor, on two layers that stack (each with its own looks, editor, opacity and on/off). Hair length,
-a full beard or a clean shave need a generative model: those go to AetherCanvas AI when it's running.
+Then every control answers at once: hair colour, lips, eyes, cheeks, brows, skin, and the basic editor, on two
+layers that stack (each with its own looks, editor, opacity and on/off). Hair length and photographic looks need a
+generative model: those go to AetherCanvas AI when it's running. (Beards moved to Changeling Tonsor, the barber.)
 Save writes the full-size result.
 """
 import os
@@ -42,9 +42,6 @@ PARTS = [
     ("Face", "Blush", "blush", BLUSH_COLOURS, False),
     ("Face", "Brows", "brows", BROW_COLOURS, False),
     ("Face", "Smooth skin", "skin", None, False),
-    ("Facial hair", "Beard colour", "beard", BEARD_COLOURS, False),
-    ("Facial hair", "Stubble", "stubble", STUBBLE_COLOURS, False),
-    ("Facial hair", "Shave", "shave", None, False),
 ]
 ADJUST = [("brightness", "Brightness"), ("contrast", "Contrast"), ("saturation", "Saturation"),
           ("warmth", "Warmth"), ("vignette", "Vignette"), ("sharpen", "Sharpen")]
@@ -158,7 +155,7 @@ class Window:
         ctk.CTkLabel(side, text="CHANGELING", text_color="gray55",
                      font=ctk.CTkFont(size=11, weight="bold")).pack(anchor="w", padx=12, pady=(10, 0))
         ctk.CTkLabel(side, text="Cosmetics", font=ctk.CTkFont(size=24, weight="bold"), text_color=PINK).pack(anchor="w", padx=12)
-        ctk.CTkLabel(side, text="makeup, hair colour and length, beards", text_color="gray60").pack(anchor="w", padx=12)
+        ctk.CTkLabel(side, text="makeup, hair colour and length", text_color="gray60").pack(anchor="w", padx=12)
 
         row = ctk.CTkFrame(side, fg_color="transparent")
         row.pack(fill="x", padx=12, pady=(14, 4))
@@ -232,7 +229,7 @@ class Window:
             self.controls["adjust:" + key] = s
 
         # the generative edits
-        self._section(side, "AI looks: makeup, hair, beard  (AetherCanvas AI)")
+        self._section(side, "AI looks: makeup, hair  (AetherCanvas AI)")
         self.ac_note = ctk.CTkLabel(side, text="Looking for AetherCanvas AI ...", text_color="gray55",
                                     wraplength=300, justify="left")
         self.ac_note.pack(anchor="w", padx=12)

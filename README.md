@@ -13,7 +13,7 @@
 
 **Website:** https://cursedprograms.github.io/Changeling-Cosmetics/
 
-![Three people, each with makeup, new hair colours, beard colour, a shave, stubble and the editor](assets/cosmetics_samples.jpg)
+![Three people, each with makeup, new hair colours and the editor (the beards here were done with the tools now in Changeling Tonsor)](assets/cosmetics_samples.jpg)
 
 *Part of the Changeling family, all together in [Changeling Studio](https://github.com/CursedPrograms/Changeling-Studio):
 [CopyCat](https://github.com/CursedPrograms/Changeling-CopyCat) ·
@@ -29,10 +29,12 @@ realtime: [Tiresias](https://github.com/CursedPrograms/Changeling-Tiresias-Realt
 [Natio](https://github.com/CursedPrograms/Changeling-Natio-Realtime) ·
 [Cosmetics](https://github.com/CursedPrograms/Changeling-Cosmetics-Realtime).*
 
-FaceApp-style cosmetics for photos: makeup, hair colour, beards and stubble, painted onto the face itself so
-the light and texture underneath stay (a lipstick keeps the lips' lines, a hair colour keeps every strand).
-Two layers that stack, a basic editor, and photographic makeup looks, hair length or a full beard through
-[AetherCanvas AI](https://github.com/CursedPrograms/AetherCanvas-AI). Every face above is an AI-generated person who
+FaceApp-style cosmetics for photos: makeup and hair colour, painted onto the face itself so the light and texture
+underneath stay (a lipstick keeps the lips' lines, a hair colour keeps every strand). Two layers that stack, a basic
+editor, makeup and face paint copied from any photo, and photographic makeup looks or hair length through
+[AetherCanvas AI](https://github.com/CursedPrograms/AetherCanvas-AI). **Beards** (colour, stubble, shave, and the AI
+beards) moved to [Changeling Tonsor](https://github.com/CursedPrograms/Changeling-Tonsor), the barber, with the
+hairstyles. Every face above is an AI-generated person who
 doesn't exist.
 
 ### Copy makeup from a photo
@@ -62,9 +64,8 @@ needed. `run.bat photo.jpg` opens with that photo.
 | **Lips** | lipstick, with **Gloss** |
 | **Eyeshadow, Eyeliner, Blush, Brows** | each with its own colours and strength |
 | **Smooth skin** | an edge-keeping blur on the skin only |
-| **Beard colour, Stubble, Shave** | colour a beard or moustache, paint stubble in, shave stubble or a short beard off |
 | **Editor** | brightness, contrast, saturation, warmth, vignette, sharpen |
-| **AI looks** (AetherCanvas AI) | makeup: natural, glam, smoky eyes, winged liner, red, nude or berry lips, glow, soft glam, gothic, bridal, freckles, no makeup; hair length: bangs, curly, straight, ponytail, bun, braids; full beard, goatee, moustache, clean shaven: sent to AetherCanvas AI when it's running (a minute or two each); **Back to the original photo** undoes them |
+| **AI looks** (AetherCanvas AI) | makeup: natural, glam, smoky eyes, winged liner, red, nude or berry lips, glow, soft glam, gothic, bridal, freckles, no makeup; hair length: bangs, curly, straight, ponytail, bun, braids: sent to AetherCanvas AI when it's running (a minute or two each); **Back to the original photo** undoes them |
 
 Every control answers at once: the preview is worked on a smaller copy, and Save paints the full-size photo.
 
@@ -72,13 +73,12 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
 
 1. **Read the face, once.** A SegFormer face parser ([jonathandinu/face-parsing](https://huggingface.co/jonathandinu/face-parsing),
    int8 ONNX) labels every pixel: hair, skin, nose, lips, brows, eyes, ears, neck, clothes. MediaPipe Face Mesh
-   finds the face's 468 points (for the eyelids, cheekbones and the beard area).
+   finds the face's 468 points (for the eyelids and cheekbones).
 2. **Paint in LAB.** Each look is a colour blended into its region: the region's brightness moves part of the way
    to the colour's, its tint all the way, its own fine variation stays. Gloss brightens where the lips already
    catch the light.
-3. **Facial hair.** The beard area is the jaw from cheek to cheek up to the nostrils, without the lips; the beard is
-   whatever in it is clearly darker than the face's own skin. Shave puts the face's own skin tone (a normalised
-   blur of the skin around it) back over it; stubble is an even shade with a fine grain.
+3. **Facial hair** is in [Changeling Tonsor](https://github.com/CursedPrograms/Changeling-Tonsor) now.
+   (`cosmetics/facial_hair.py` stays for Changeling Cosmetics Realtime's live beard tools.)
 4. **Copied makeup.** Both faces are read with Face Mesh (478 points, plus a ring around each face reaching up the
    forehead). The reference is cut into those triangles and each one is warped onto yours, at full size, so every
    stroke lands where it was: a clown's star over your eye, a skull's teeth on your lips, whatever your face's shape.

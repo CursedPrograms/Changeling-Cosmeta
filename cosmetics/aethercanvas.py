@@ -1,5 +1,5 @@
 """aethercanvas.py - the edits Cosmetics can't paint, or paints less well: photographic makeup looks, hair
-length and style, a full beard, a clean shave.
+length and style. (The beard edits went to Changeling Tonsor with the beards.)
 
 Those need a generative model, so Cosmetics sends the picture to AetherCanvas AI (Qwen-Image Edit, running on
 this PC: https://github.com/CursedPrograms/AetherCanvas-AI) with a ready instruction and gets the edited picture
@@ -50,12 +50,6 @@ EDITS = {
         ("Ponytail", "Tie the hair back into a high ponytail"),
         ("Bun", "Put the hair up in a neat bun"),
         ("Braids", "Style the hair in long braids"),
-    ],
-    "Beard": [
-        ("Full beard", "Give the man a full, well-groomed beard, same hair colour"),
-        ("Goatee", "Give the man a neat goatee"),
-        ("Moustache", "Give the man a moustache"),
-        ("Clean shaven", "Make the face clean shaven, no beard or stubble"),
     ],
 }
 
