@@ -9,3 +9,5 @@ models/*.pth
 # your makeup reference photos stay on this PC
 makeup_refs/*
 !makeup_refs/README.md
+# Stable-Makeup: its code (cloned by run.bat) and its own environment
+StableMakeup/

@@ -66,8 +66,10 @@ class _StableMakeup:
             have = len(sm.FILES) - len(missing)
             return False, (f"Stable-Makeup's models are still coming: {have} of {len(sm.FILES)} files in "
                            f"{sm.ROOT} (python -m cosmetics.stable_makeup_models fetches the rest).")
-        if not os.path.exists(os.path.join(HERE, "cosmetics", "stable_makeup.py")):
-            return False, "Stable-Makeup's models are here; its code isn't in this version yet."
+        from .stable_makeup import installed
+        if not installed():
+            return False, ("Stable-Makeup's models are here, its code and environment aren't: setup_stable_makeup.bat sets them up "
+                           "(StableMakeup/, about 3 GB of Python packages once).")
         return True, ""
 
     @staticmethod
