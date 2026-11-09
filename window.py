@@ -193,6 +193,16 @@ class Window:
         self.ref_thumb.pack(side="left")
         self.ref_btn = ctk.CTkButton(row, text="Pick a makeup photo", command=self.pick_reference)
         self.ref_btn.pack(side="left", fill="x", expand=True, padx=(8, 0))
+        from cosmetics.transfer_models import DEFAULT, MODELS
+        ctk.CTkLabel(box, text="Model", text_color="gray70").pack(anchor="w", padx=8, pady=(4, 0))
+        self.transfer_pick = ctk.CTkSegmentedButton(box, values=[n.split(" (")[0] for n in MODELS],
+                                                    command=self.pick_transfer_model)
+        self.transfer_pick.set(DEFAULT.split(" (")[0])
+        self.transfer_pick.pack(fill="x", padx=8, pady=(2, 0))
+        self.transfer_note = ctk.CTkLabel(box, text="Warp: exact, patterns and all, a fifth of a second.",
+                                          text_color="gray55", wraplength=290, justify="left")
+        self.transfer_note.pack(anchor="w", padx=8)
+        self.transfer_name = DEFAULT
         self.paint_mode = ctk.CTkSegmentedButton(box, values=["Makeup", "Face paint"],
                                                  command=lambda _: self.copy_makeup())
         self.paint_mode.set("Makeup")
@@ -205,7 +215,7 @@ class Window:
         ctk.CTkSwitch(box, text="Copied makeup", variable=on, command=self._look_changed).pack(anchor="w", padx=8, pady=(4, 2))
         strength = self._slider(box, "Strength", 0, 150, 100, self._look_changed)
         self.controls["transfer"] = (on, strength, None, None)
-        self.transfer_model = None
+        self.transfer_model = None          # (model name, the loaded model)
         self.ref_image = None
 
         group = None
@@ -488,22 +498,41 @@ class Window:
         self.ref_image, self.ref_name = ref_image, os.path.basename(path)
         self.copy_makeup()
 
+    def pick_transfer_model(self, short):
+        """The Model switch: Warp, DMT or Stable-Makeup. One that isn't here says why and the last one stays."""
+        from cosmetics.transfer_models import MODELS
+        name = next(n for n in MODELS if n.split(" (")[0] == short)
+        ok, why = MODELS[name].available()
+        notes = {"Warp": "Warp: exact, patterns and all, a fifth of a second.",
+                 "DMT": "DMT: a GAN at 256 pixels; colours and style, not drawn patterns.",
+                 "Stable-Makeup": "Stable-Makeup: a diffusion model redraws the makeup; seconds a photo, GPU."}
+        if not ok:
+            self.transfer_pick.set(self.transfer_name.split(" (")[0])
+            self.transfer_note.configure(text=why)
+            return
+        self.transfer_name = name
+        self.transfer_note.configure(text=notes[short])
+        self.copy_makeup()
+
     def copy_makeup(self):
         """Copy the picked photo's makeup (again: the mode changed) onto this layer."""
         if self.ref_image is None or self.painter is None or self.job is not None:
             return
         ref_image, name, paint = self.ref_image, self.ref_name, self.paint_mode.get() == "Face paint"
+        model_name = self.transfer_name
 
         def work():
-            from cosmetics.mesh_transfer import MeshTransfer
-            if self.transfer_model is None:
-                self.transfer_model = MeshTransfer()
-            delta, _ = self.transfer_model.delta(self.painter.face, ref_image, paint=paint)
+            from cosmetics.transfer_models import MODELS
+            if self.transfer_model is None or self.transfer_model[0] != model_name:
+                with self.lock:
+                    self.state["stage"] = f"Loading {model_name}"
+                self.transfer_model = (model_name, MODELS[model_name].make())
+            delta, _ = self.transfer_model[1].delta(self.painter.face, ref_image, paint, self.parser)
             self.painter.transfer = delta
             ph, pw = self.preview.face.image.shape[:2]
             self.preview.transfer = cv2.resize(delta, (pw, ph), interpolation=cv2.INTER_AREA)
             self.layer.look.transfer.on = True
-            return f"{'Face paint' if paint else 'Makeup'} copied from {name}: shown on this layer."
+            return f"{'Face paint' if paint else 'Makeup'} copied from {name} ({model_name.split(' (')[0]}): shown on this layer."
         self._run(work, "Copying the makeup")
         self.controls["transfer"][0].set(True)
 
