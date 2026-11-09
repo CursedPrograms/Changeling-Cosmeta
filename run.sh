@@ -20,8 +20,4 @@ if [ ! -f models/face_parsing_int8.onnx ]; then
     curl -L --fail -o models/face_parsing_int8.onnx.part "https://huggingface.co/jonathandinu/face-parsing/resolve/main/onnx/model_quantized.onnx"
     mv models/face_parsing_int8.onnx.part models/face_parsing_int8.onnx
 fi
-if [ ! -f models/dmt.onnx ]; then
-    echo "Downloading the makeup transfer model, about 48 MB, once ..."
-    curl -L --fail -o models/dmt.onnx.part "https://github.com/CursedPrograms/Changeling-Cosmetics/releases/download/models/dmt.onnx" && mv models/dmt.onnx.part models/dmt.onnx || true
-fi
 exec "$PY" app.py "$@"

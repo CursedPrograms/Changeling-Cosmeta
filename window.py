@@ -183,7 +183,7 @@ class Window:
         ctk.CTkButton(row, text="Clear layer", width=90, command=self.clear_layer).pack(side="right")
         self.opacity = self._slider(side, "Opacity", 0, 100, 100, self._layer_changed)
 
-        # makeup copied from a photo (the makeup transfer model)
+        # makeup copied from a photo (the reference's face warped onto this one: cosmetics/mesh_transfer.py)
         self._section(side, "Copy makeup from a photo")
         box = ctk.CTkFrame(side, fg_color=("gray86", "gray17"), corner_radius=8)
         box.pack(fill="x", padx=12, pady=3)
@@ -193,17 +193,20 @@ class Window:
         self.ref_thumb.pack(side="left")
         self.ref_btn = ctk.CTkButton(row, text="Pick a makeup photo", command=self.pick_reference)
         self.ref_btn.pack(side="left", fill="x", expand=True, padx=(8, 0))
-        self.paint_mode = ctk.CTkSegmentedButton(box, values=["Makeup", "Face paint"])
+        self.paint_mode = ctk.CTkSegmentedButton(box, values=["Makeup", "Face paint"],
+                                                 command=lambda _: self.copy_makeup())
         self.paint_mode.set("Makeup")
         self.paint_mode.pack(fill="x", padx=8, pady=(4, 0))
-        ctk.CTkLabel(box, text="Makeup keeps your own skin tone; Face paint takes everything (a clown's white, "
-                     "corpse paint, festival colours). Pick the photo again after switching.", text_color="gray55",
+        ctk.CTkLabel(box, text="Makeup takes only what the makeup changed, on your own skin tone. Face paint "
+                     "takes its colours outright: a clown's white, a skull, corpse paint, festival colours.",
+                     text_color="gray55",
                      wraplength=290, justify="left").pack(anchor="w", padx=8)
         on = ctk.BooleanVar(value=False)
         ctk.CTkSwitch(box, text="Copied makeup", variable=on, command=self._look_changed).pack(anchor="w", padx=8, pady=(4, 2))
         strength = self._slider(box, "Strength", 0, 150, 100, self._look_changed)
         self.controls["transfer"] = (on, strength, None, None)
         self.transfer_model = None
+        self.ref_image = None
 
         group = None
         for g, label, key, colours, gloss in PARTS:
@@ -482,18 +485,25 @@ class Window:
         s = min(h, w)
         square = ref_image[(h - s) // 2:(h + s) // 2, (w - s) // 2:(w + s) // 2]
         self.ref_thumb.configure(image=ctk.CTkImage(Image.fromarray(square), size=(56, 56)), text="")
+        self.ref_image, self.ref_name = ref_image, os.path.basename(path)
+        self.copy_makeup()
+
+    def copy_makeup(self):
+        """Copy the picked photo's makeup (again: the mode changed) onto this layer."""
+        if self.ref_image is None or self.painter is None or self.job is not None:
+            return
+        ref_image, name, paint = self.ref_image, self.ref_name, self.paint_mode.get() == "Face paint"
 
         def work():
-            from cosmetics.transfer import MakeupTransfer, read_reference
+            from cosmetics.mesh_transfer import MeshTransfer
             if self.transfer_model is None:
-                self.transfer_model = MakeupTransfer()
-            ref = read_reference(self.parser, ref_image)
-            delta, _ = self.transfer_model.delta(self.painter.face, ref, paint=self.paint_mode.get() == "Face paint")
+                self.transfer_model = MeshTransfer()
+            delta, _ = self.transfer_model.delta(self.painter.face, ref_image, paint=paint)
             self.painter.transfer = delta
             ph, pw = self.preview.face.image.shape[:2]
             self.preview.transfer = cv2.resize(delta, (pw, ph), interpolation=cv2.INTER_AREA)
             self.layer.look.transfer.on = True
-            return f"Makeup copied from {os.path.basename(path)}: shown on this layer."
+            return f"{'Face paint' if paint else 'Makeup'} copied from {name}: shown on this layer."
         self._run(work, "Copying the makeup")
         self.controls["transfer"][0].set(True)
 

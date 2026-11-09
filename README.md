@@ -37,11 +37,13 @@ doesn't exist.
 
 ### Copy makeup from a photo
 
-![Three makeup photos (a clown's face paint, a goth's face paint, dark glam makeup) copied onto three women](assets/transfer_samples.jpg)
+![Six makeup photos (top) on three women: a clown, a sugar skull, corpse paint, festival paint, a goth, dark glam](assets/transfer_samples.jpg)
 
-The top row is the makeup; each row below is a person wearing it: face paint takes the whole face, white base and
-all; makeup keeps her own skin tone. It copies colours and style, not drawn patterns (cracks, stars, motifs). All
-the faces are AI-generated people who don't exist.
+The top row is the makeup; each row below is a person wearing it. The reference's face is warped onto hers
+triangle by triangle, so the drawn patterns land where they were: the clown's stars and tears, the skull's petals
+and web, the corpse paint's cracks, the festival dots. **Face paint** (the first five) takes the colours outright;
+**Makeup** (dark glam, last) takes only what the makeup changed and keeps her own skin tone. All the faces are
+AI-generated people who don't exist.
 
 ## Use it
 
@@ -77,17 +79,25 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
 3. **Facial hair.** The beard area is the jaw from cheek to cheek up to the nostrils, without the lips; the beard is
    whatever in it is clearly darker than the face's own skin. Shave puts the face's own skin tone (a normalised
    blur of the skin around it) back over it; stubble is an even shade with a fine grain.
-4. **Copied makeup.** DMT (Disentangled Makeup Transfer, a GAN, converted to ONNX: `models/dmt.onnx`, 48 MB) puts the
-   reference's makeup on a 256-pixel copy of the face; only its colour change comes back, onto the full-size photo, on
-   the lips, eyes, brows and cheeks. Lids and brows only darken, and the skin keeps its own lightness: the model
-   learned from pale "after" photos, so its foundation would lighten skin, which is a skin-tone change, not makeup.
+4. **Copied makeup.** Both faces are read with Face Mesh (478 points, plus a ring around each face reaching up the
+   forehead). The reference is cut into those triangles and each one is warped onto yours, at full size, so every
+   stroke lands where it was: a clown's star over your eye, a skull's teeth on your lips, whatever your face's shape.
+   **Face paint** takes the reference's colours outright and keeps your skin's fine texture under them. **Makeup**
+   takes only what the makeup changed, compared with the reference's own bare skin around it, and adds that to your
+   skin. The lips take the reference's lip colour. Your eyes and open mouth stay your own (the reference's are filled
+   in before warping). About a fifth of a second a photo; no model to download. Painted faces Face Mesh can't read
+   straight away are cropped to the face OpenCV's YuNet finds and read again.
+
+   Its limits: a reference with an open mouth on a closed one (or the other way) leaves the paint around the lips
+   less tidy. A reference turned well away from the camera stretches. Hats, noses and the like aren't 3D: a clown's
+   red nose is painted on.
 5. **Two layers.** Layer 2 is painted onto Layer 1's result with the same masks, each with its editor and opacity.
 
 `cosmetics/adjust.py` (the editor) is the same file in every Changeling.
 
 ## Licenses
 
-The code is MIT; the makeup transfer model comes from an MIT-licensed Space (huggingface.co/spaces/rashid996958/makeup-transfer). The face parser was trained on CelebAMask-HQ, which is for non-commercial research; MediaPipe is
+The code is MIT; The face parser was trained on CelebAMask-HQ, which is for non-commercial research; MediaPipe is
 Apache 2.0.
 
 ---
