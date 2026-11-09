@@ -72,17 +72,26 @@ def _lab(img):
 def _tint(lab, mask, colour, strength, light=0.6, keep=0.35):
     """Blend `colour` into `lab` where `mask` is: brightness `light` of the way to the colour's, tint all
     the way, the region's own variation kept at `keep`."""
-    if strength <= 0 or mask.max() <= 0:
+    if strength <= 0:
         return lab
+    ys, xs = np.nonzero(mask > 0.002)            # only the mask's own box is worked on (quick enough for video)
+    if not len(ys):
+        return lab
+    y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
+    region, m = lab[y0:y1, x0:x1], mask[y0:y1, x0:x1]
     t = _lab(np.uint8([[rgb(colour)]]))[0, 0]
-    sel = mask > 0.05
-    mean = lab[sel].mean(0)
-    out = lab.copy()
-    out[..., 0] = lab[..., 0] + (t[0] - mean[0]) * light
-    out[..., 1] = t[1] + (lab[..., 1] - mean[1]) * keep
-    out[..., 2] = t[2] + (lab[..., 2] - mean[2]) * keep
-    a = (np.clip(mask * strength, 0, 1))[..., None]
-    return lab * (1 - a) + out * a
+    sel = m > 0.05
+    if not sel.any():
+        return lab
+    mean = region[sel].mean(0)
+    out = np.empty_like(region)
+    out[..., 0] = region[..., 0] + (t[0] - mean[0]) * light
+    out[..., 1] = t[1] + (region[..., 1] - mean[1]) * keep
+    out[..., 2] = t[2] + (region[..., 2] - mean[2]) * keep
+    a = (np.clip(m * strength, 0, 1))[..., None]
+    lab = lab.copy()
+    lab[y0:y1, x0:x1] = region * (1 - a) + out * a
+    return lab
 
 
 def _resample(points, n):

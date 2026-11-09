@@ -5,6 +5,7 @@ __pycache__/
 models/*.onnx
 models/*.part
 models/*.pb
+models/*.pth
 # your makeup reference photos stay on this PC
 makeup_refs/*
 !makeup_refs/README.md
