@@ -2,7 +2,7 @@
 
 The model is DMT (Disentangled Makeup Transfer, a GAN trained on before/after makeup photos), converted to ONNX
 (models/dmt.onnx, 48 MB; run.bat fetches it). It works on 256 x 256 faces, too small for a photo, so it isn't
-pasted in: Cosmetics takes only the colour change it made (in LAB, smoothed) and adds that to the full-size photo
+pasted in: Cosmeta takes only the colour change it made (in LAB, smoothed) and adds that to the full-size photo
 on the lips, the eyes' surroundings, the cheeks and the skin. The photo's own detail, hair and background stay.
 """
 import os

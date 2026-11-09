@@ -1,4 +1,4 @@
-"""Changeling Cosmetics: makeup, hair colour and length, beards, on two layers.
+"""Changeling Cosmeta: makeup, hair colour and length, beards, on two layers.
 
     python app.py              the window
     python app.py photo.jpg    the window, with this photo open

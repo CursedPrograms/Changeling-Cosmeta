@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run.sh - Changeling Cosmetics. Sets up ./venv the first time (and again when requirements.txt changes),
+# run.sh - Changeling Cosmeta. Sets up ./venv the first time (and again when requirements.txt changes),
 # fetches the face parser once, then opens the window. ./run.sh photo.jpg opens with that photo.
 set -e
 cd "$(dirname "$0")"

@@ -9,9 +9,9 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/CursedPrograms/Changeling-Studio/main/site/logo.png" alt="Changeling" width="120"></p>
 
-# Changeling Cosmetics
+# Changeling Cosmeta
 
-**Website:** https://cursedprograms.github.io/Changeling-Cosmetics/
+**Website:** https://cursedprograms.github.io/Changeling-Cosmeta/
 
 ![Three people, each with makeup, new hair colours and the editor (the beards here were done with the tools now in Changeling Tonsor)](assets/cosmetics_samples.jpg)
 
@@ -21,15 +21,16 @@
 [Tiresias](https://github.com/CursedPrograms/Changeling-Tiresias) (gender) ·
 [Chronos](https://github.com/CursedPrograms/Changeling-Chronos) (age) ·
 [Natio](https://github.com/CursedPrograms/Changeling-Natio) (where in the world) ·
-**Cosmetics** (makeup, hair, beards) ·
+**Cosmeta** (makeup, hair, beards) ·
 [Echo](https://github.com/CursedPrograms/Changeling-Echo) (voices) ·
 [Tonsor](https://github.com/CursedPrograms/Changeling-Tonsor) (hairstyles) ·
 realtime: [Tiresias](https://github.com/CursedPrograms/Changeling-Tiresias-Realtime) ·
 [Chronos](https://github.com/CursedPrograms/Changeling-Chronos-Realtime) ·
 [Natio](https://github.com/CursedPrograms/Changeling-Natio-Realtime) ·
-[Cosmetics](https://github.com/CursedPrograms/Changeling-Cosmetics-Realtime).*
+[Cosmeta](https://github.com/CursedPrograms/Changeling-Cosmeta-Realtime).*
 
-FaceApp-style cosmetics for photos: makeup and hair colour, painted onto the face itself so the light and texture
+A *cosmeta* was the servant who adorned a Roman lady: her makeup, her hair, her jewels (from the Greek *kosmetes*, the root of "cosmetics").
+Changeling Cosmeta does the same for a photo. FaceApp-style cosmetics for photos: makeup and hair colour, painted onto the face itself so the light and texture
 underneath stay (a lipstick keeps the lips' lines, a hair colour keeps every strand). Two layers that stack, a basic
 editor, makeup and face paint copied from any photo, and photographic makeup looks or hair length through
 [AetherCanvas AI](https://github.com/CursedPrograms/AetherCanvas-AI). **Beards** (colour, stubble, shave, and the AI
@@ -53,7 +54,7 @@ Start `run.bat` (or `.\run.ps1`, `./run.sh`). The first time it sets itself up: 
 OpenCV, ONNX Runtime and customtkinter, and the face parser (`models/face_parsing_int8.onnx`, about 90 MB). No GPU
 needed. `run.bat photo.jpg` opens with that photo.
 
-![Changeling Cosmetics's window: the photo, the result, and the controls on the right](assets/window.png)
+![Changeling Cosmeta's window: the photo, the result, and the controls on the right](assets/window.png)
 
 | Control | Does |
 | --- | --- |
@@ -78,7 +79,7 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
    to the colour's, its tint all the way, its own fine variation stays. Gloss brightens where the lips already
    catch the light.
 3. **Facial hair** is in [Changeling Tonsor](https://github.com/CursedPrograms/Changeling-Tonsor) now.
-   (`cosmetics/facial_hair.py` stays for Changeling Cosmetics Realtime's live beard tools.)
+   (`cosmetics/facial_hair.py` stays for Changeling Cosmeta Realtime's live beard tools.)
 4. **Copied makeup.** Both faces are read with Face Mesh (478 points, plus a ring around each face reaching up the
    forehead). The reference is cut into those triangles and each one is warped onto yours, at full size, so every
    stroke lands where it was: a clown's star over your eye, a skull's teeth on your lips, whatever your face's shape.
@@ -103,6 +104,8 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
 
 The code is MIT; The face parser was trained on CelebAMask-HQ, which is for non-commercial research; MediaPipe is
 Apache 2.0.
+
+<p align="center"><img src="assets/site-qr.png" alt="QR code to the Changeling-Cosmeta website" width="200"></p>
 
 ---
 

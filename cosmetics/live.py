@@ -1,4 +1,4 @@
-"""live.py - Changeling Cosmetics on video, frame by frame (Changeling Cosmetics Realtime uses it).
+"""live.py - Changeling Cosmeta on video, frame by frame (Changeling Cosmeta Realtime uses it).
 
     live = Live()
     out = live.apply(frame_rgb, look, adjust)      # the frame with the look painted on (and the editor's changes)

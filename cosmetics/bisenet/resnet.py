@@ -81,7 +81,7 @@ class Resnet18(nn.Module):
         return feat8, feat16, feat32
 
     def init_weight(self):
-        return      # Changeling Cosmetics: the face parsing checkpoint holds these weights too; no ImageNet download
+        return      # Changeling Cosmeta: the face parsing checkpoint holds these weights too; no ImageNet download
         state_dict = modelzoo.load_url(resnet18_url)
         self_state_dict = self.state_dict()
         for k, v in state_dict.items():

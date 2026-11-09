@@ -1,7 +1,7 @@
-"""aethercanvas.py - the edits Cosmetics can't paint, or paints less well: photographic makeup looks, hair
+"""aethercanvas.py - the edits Cosmeta can't paint, or paints less well: photographic makeup looks, hair
 length and style. (The beard edits went to Changeling Tonsor with the beards.)
 
-Those need a generative model, so Cosmetics sends the picture to AetherCanvas AI (Qwen-Image Edit, running on
+Those need a generative model, so Cosmeta sends the picture to AetherCanvas AI (Qwen-Image Edit, running on
 this PC: https://github.com/CursedPrograms/AetherCanvas-AI) with a ready instruction and gets the edited picture
 back. When AetherCanvas isn't running, these buttons say so and stay off.
 

@@ -6,7 +6,7 @@ labels come back as full-size masks. The looks (looks.py) then only blend colour
 answers at once.
 
 Two parsers, the same labels: Parser (SegFormer, int8 ONNX, about 1.2 s on the CPU: photos) and FastParser
-(BiSeNet in PyTorch on the graphics card, a few milliseconds: live video, Changeling Cosmetics Realtime). BiSeNet's
+(BiSeNet in PyTorch on the graphics card, a few milliseconds: live video, Changeling Cosmeta Realtime). BiSeNet's
 weights are face_parsing_79999_iter.pth (zllrunning/face-parsing.PyTorch, MIT), the copy HairFastGAN ships: it's
 taken from F:\\AIModels\\face or HairFastGAN's models if it isn't in models/ already.
 """

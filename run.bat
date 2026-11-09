@@ -1,5 +1,5 @@
 @echo off
-rem run.bat - Changeling Cosmetics. Sets up .\venv the first time (and again when requirements.txt changes),
+rem run.bat - Changeling Cosmeta. Sets up .\venv the first time (and again when requirements.txt changes),
 rem fetches the face parser once, then opens the window. run.bat photo.jpg opens with that photo.
 setlocal
 cd /d "%~dp0"
@@ -24,6 +24,6 @@ if not exist "models\face_parsing_int8.onnx" (
 if errorlevel 1 pause
 exit /b
 :fail
-echo Setup failed: Changeling Cosmetics needs Python 3.11.
+echo Setup failed: Changeling Cosmeta needs Python 3.11.
 pause
 exit /b 1

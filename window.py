@@ -1,4 +1,4 @@
-"""window.py - Changeling Cosmetics's window, in Changeling's look (customtkinter, the Cursed pink).
+"""window.py - Changeling Cosmeta's window, in Changeling's look (customtkinter, the Cursed pink).
 
 Open a photo; the face is read once (which pixel is hair, skin, lips, brows; where the face's points are).
 Then every control answers at once: hair colour, lips, eyes, cheeks, brows, skin, and the basic editor, on two
@@ -26,7 +26,7 @@ from cosmetics.looks import (BLUSH_COLOURS, BROW_COLOURS, HAIR_COLOURS, LINER_CO
                              SHADOW_COLOURS, Look, Painter)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-GITHUB = "https://github.com/CursedPrograms/Changeling-Cosmetics"
+GITHUB = "https://github.com/CursedPrograms/Changeling-Cosmeta"
 KOFI = "https://ko-fi.com/cursedentertainment"
 PINK = "#e0408a"
 PREVIEW = 1100                  # the preview is worked on at most this many pixels across; Save is full size
@@ -117,7 +117,7 @@ class Window:
         ctk.set_default_color_theme(os.path.join(HERE, "theme.json"))
         self.root = ctk.CTk()
         set_logo(self.root, HERE)
-        self.root.title("Changeling Cosmetics")
+        self.root.title("Changeling Cosmeta")
         self.root.geometry("1380x860")
         self.root.minsize(1060, 680)
         self.root.grid_columnconfigure(0, weight=1)
@@ -154,7 +154,7 @@ class Window:
             ctk.CTkLabel(side, image=logo, text="").pack(anchor="w", padx=12, pady=(10, 0))
         ctk.CTkLabel(side, text="CHANGELING", text_color="gray55",
                      font=ctk.CTkFont(size=11, weight="bold")).pack(anchor="w", padx=12, pady=(10, 0))
-        ctk.CTkLabel(side, text="Cosmetics", font=ctk.CTkFont(size=24, weight="bold"), text_color=PINK).pack(anchor="w", padx=12)
+        ctk.CTkLabel(side, text="Cosmeta", font=ctk.CTkFont(size=24, weight="bold"), text_color=PINK).pack(anchor="w", padx=12)
         ctk.CTkLabel(side, text="makeup, hair colour and length", text_color="gray60").pack(anchor="w", padx=12)
 
         row = ctk.CTkFrame(side, fg_color="transparent")

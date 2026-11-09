@@ -1,4 +1,4 @@
-"""facial_hair.py - Cosmetics for beards: colour what's there, paint stubble in, shave stubble off.
+"""facial_hair.py - Cosmeta for beards: colour what's there, paint stubble in, shave stubble off.
 
 The beard area comes from Face Mesh: the jaw line from cheek to cheek under the chin, up to the
 nostrils and the cheeks, without the lips. Inside it, "beard" is whatever is clearly darker than the
@@ -7,7 +7,7 @@ face's own skin (so it works on any skin tone and any beard), softened at the ed
     colour   tint the beard and moustache (grey to black, a dyed red, bleached)
     stubble  a fine stipple of dark points over the area: a shadow of a beard
     shave    the skin blended back over the beard (good for stubble and short beards; a full beard
-             needs a generative edit: Cosmetics sends "clean shaven" to AetherCanvas AI)
+             needs a generative edit: Cosmeta sends "clean shaven" to AetherCanvas AI)
 """
 import cv2
 import numpy as np
