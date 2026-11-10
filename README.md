@@ -96,7 +96,14 @@ Every control answers at once: the preview is worked on a smaller copy, and Save
 
    **Model** switches how it's copied: **Warp** (this, the default), **GAN (classic)** (the earlier model, DMT: Disentangled Makeup Transfer, colours and style
    at 256 pixels, if `models/dmt.onnx` is on the PC) or **Stable-Makeup** (a diffusion model, about 8 GB of models in
-   `F:\AIModels\StableMakeup`; it's offered once they're all there). One that isn't available says why.
+   `F:\AIModels\StableMakeup`; it's offered once they're all there and `setup_stable_makeup.bat` has set up its
+   code and environment). One that isn't available says why.
+
+   Stable-Makeup redraws a 512 x 512 square around the face (the identity and face shape held by two ControlNets),
+   and Cosmeta puts it back on the face only. It runs in half precision and fits a 6 GB card (about 4.4 GB of
+   models, 5.1 GB at its peak): about a minute to load the first time, then about 10 seconds a photo on an RTX 2060.
+   Where Warp copies a pattern stroke for stroke, Stable-Makeup paints in the reference's style: a sugar skull
+   keeps its white face, black nose and orange-and-purple eyes but not every petal and dot.
 
    Its limits: a reference with an open mouth on a closed one (or the other way) leaves the paint around the lips
    less tidy. A reference turned well away from the camera stretches. Hats, noses and the like aren't 3D: a clown's

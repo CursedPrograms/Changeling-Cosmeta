@@ -57,12 +57,13 @@ def main():
     for model, name in ((makeup_encoder, "pytorch_model.bin"), (id_encoder, "pytorch_model_1.bin"),
                         (pose_encoder, "pytorch_model_2.bin")):
         model.load_state_dict(torch.load(os.path.join(weights, name), map_location="cpu"), strict=False)
-        model.to(device=device).half()
+        model.half().to(device=device)               # halved on the CPU first: 6 GB cards never hold the fp32 copy
     pipe = StableDiffusionControlNetPipeline.from_pretrained(
         sd15, safety_checker=None, feature_extractor=None, requires_safety_checker=False, unet=unet,
         controlnet=[id_encoder, pose_encoder], variant="fp16", torch_dtype=torch.float16).to(device)
     pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
     detector = RetinaFace(gpu_id=0)
+    print(f"vram: {torch.cuda.memory_allocated() / 2**20:.0f} MB of models", flush=True)
 
     def square_face(bgr, padding=1.5):
         faces = detector(bgr, cv=True)
@@ -100,9 +101,14 @@ def main():
             result = makeup_encoder.generate(id_image=[you, pose(you, size)], makeup_image=ref, pipe=pipe,
                                              guidance_scale=float(job.get("guidance", 1.6)))
             result.save(job["out"])
+            print(f"vram: peak {torch.cuda.max_memory_allocated() / 2**20:.0f} MB allocated, "
+                  f"{torch.cuda.max_memory_reserved() / 2**20:.0f} MB reserved", flush=True)
             say({"ok": True, "box": box}, out)
         except Exception as e:  # noqa: BLE001 - told to the window
             say({"ok": False, "error": f"{type(e).__name__}: {e}"}, out)
+        finally:
+            torch.cuda.empty_cache()
+            torch.cuda.reset_peak_memory_stats()
 
 
 if __name__ == "__main__":

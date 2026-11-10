@@ -17,5 +17,5 @@ if (-not (Test-Path $Py)) {
 python -m cosmetics.stable_makeup_models
 $Root = if ($env:STABLE_MAKEUP_DIR) { $env:STABLE_MAKEUP_DIR } else { "F:\AIModels\StableMakeup" }
 if (-not (Test-Path "StableMakeup\checkpoints")) { New-Item -ItemType Junction -Path "StableMakeup\checkpoints" -Target $Root | Out-Null }
-Set-Content "StableMakeupeady" "ready"
+Set-Content "StableMakeup\ready" "ready"
 Write-Host "Stable-Makeup is ready: pick it under Copy makeup, Model."

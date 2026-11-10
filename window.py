@@ -11,6 +11,7 @@ import threading
 import time
 import tkinter as tk
 import webbrowser
+from gallery import remember, show as show_gallery
 from dataclasses import dataclass, field, fields
 from tkinter import colorchooser, filedialog
 
@@ -162,6 +163,7 @@ class Window:
         ctk.CTkButton(row, text="Open photo  (Ctrl+O)", command=self.open).pack(side="left", expand=True, fill="x", padx=(0, 4))
         self.save_btn = ctk.CTkButton(row, text="Save", width=70, command=self.save, state="disabled")
         self.save_btn.pack(side="left")
+        ctk.CTkButton(row, text="Gallery", width=80, command=self.gallery).pack(side="left", padx=(4, 4))
         self.bar = ctk.CTkProgressBar(side, mode="determinate")
         self.bar.set(0)
         self.bar.pack(fill="x", padx=12, pady=(6, 2))
@@ -566,6 +568,10 @@ class Window:
         self.undo_btn.configure(state="disabled")
         self._run(lambda: self._read(self.original), "Reading the face")
 
+    def gallery(self):
+        """Everything made with the Changelings (saving still asks where; the gallery lists it too)."""
+        show_gallery(self.root, "Cosmeta")
+
     def save(self):
         if self.painter is None:
             return
@@ -580,6 +586,7 @@ class Window:
         self.root.update_idletasks()
         if write_rgb(path, compose(self.painter, self.layers)):
             self.status.configure(text=f"Saved {os.path.basename(path)}")
+            remember(path, "Cosmeta")
 
     def run(self, path=None):
         if path:
