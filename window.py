@@ -1,4 +1,4 @@
-"""window.py - Changeling Cosmeta's window, in Changeling's look (customtkinter, the Cursed pink).
+"""window.py - Changeling Cosmeta's window, in Changeling's look (customtkinter, the Atelier blue).
 
 Open a photo; the face is read once (which pixel is hair, skin, lips, brows; where the face's points are).
 Then every control answers at once: hair colour, lips, eyes, cheeks, brows, skin, and the basic editor, on two
@@ -29,7 +29,7 @@ from cosmetics.looks import (BLEND_MODES, BLUSH_COLOURS, BROW_COLOURS, HAIR_COLO
 HERE = os.path.dirname(os.path.abspath(__file__))
 GITHUB = "https://github.com/CursedPrograms/Changeling-Cosmeta"
 KOFI = "https://ko-fi.com/cursedentertainment"
-PINK = "#e0408a"
+PINK = "#007bb7"
 PREVIEW = 1100                  # the preview is worked on at most this many pixels across; Save is full size
 IMAGE_TYPES = [("Pictures", "*.png *.jpg *.jpeg *.webp *.bmp *.jfif"), ("All files", "*.*")]
 STUBBLE_COLOURS = {"Dark": "#1a1410", "Brown": "#3a2618", "Grey": "#6a6a68"}
@@ -253,7 +253,7 @@ class Window:
         links = ctk.CTkFrame(side, fg_color="transparent")
         links.pack(fill="x", padx=12, pady=(14, 2))
         for text, url in (("GitHub", GITHUB), ("Ko-fi", KOFI)):
-            l = ctk.CTkLabel(links, text=text, text_color=("#c2186b", "#f29cc0"), cursor="hand2")
+            l = ctk.CTkLabel(links, text=text, text_color=("#005184", "#34a9e3"), cursor="hand2")
             l.pack(side="left", padx=(0, 14))
             l.bind("<Button-1>", lambda e, u=url: webbrowser.open(u))
         ctk.CTkLabel(side, text="© Cursed Entertainment 2026", text_color="gray45").pack(anchor="w", padx=12, pady=(0, 10))
